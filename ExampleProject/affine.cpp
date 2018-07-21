@@ -16,8 +16,8 @@ private:
 	int nMapSize = 1024;
 
 	// Positon of player.
-	float fWorldX = 0.0f;
-	float fWorldY = 0.0f;
+	float fWorldX = 1000.0f;
+	float fWorldY = 1000.0f;
 	float fWorldA = 0.0f;
 
 	// 
