@@ -20,7 +20,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="swatch.cpp">
+    <ClCompile Include="affine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
