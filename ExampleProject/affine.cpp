@@ -56,6 +56,17 @@ protected:
 
 	virtual bool OnUserUpdate(float fElapsedTime)
 	{
+		//  Key detection.
+		if (GetKey(L'Q').bHeld) fNear += 0.1f * fElapsedTime;
+		if (GetKey(L'A').bHeld) fNear -= 0.1f * fElapsedTime;
+
+		if (GetKey(L'W').bHeld) fFar += 0.1f * fElapsedTime;
+		if (GetKey(L'S').bHeld) fFar -= 0.1f * fElapsedTime;
+
+		if (GetKey(L'Z').bHeld) fFoVHalf += 0.1f * fElapsedTime;
+		if (GetKey(L'X').bHeld) fFoVHalf -= 0.1f * fElapsedTime;
+
+
 		float fFarX1 = fWorldX + cosf(fWorldA - fFoVHalf) * fFar;
 		float fFarY1 = fWorldY + sinf(fWorldA - fFoVHalf) * fFar;
 
@@ -72,10 +83,10 @@ protected:
 		{
 			float fSampleDepth = (float)y / ((float)ScreenHeight() / 2.0f);
 
-			float fStartX = (fFarX1 - fNearX1) * (fSampleDepth) + fNearX1;
-			float fStartY = (fFarY1 - fNearY1) * (fSampleDepth) + fNearY1;
-			float fEndX = (fFarX2 - fNearX2) * (fSampleDepth) + fNearX2;
-			float fEndY = (fFarY2 - fNearY2) * (fSampleDepth) + fNearY2;
+			float fStartX = (fFarX1 - fNearX1) / (fSampleDepth) + fNearX1;
+			float fStartY = (fFarY1 - fNearY1) / (fSampleDepth) + fNearY1;
+			float fEndX = (fFarX2 - fNearX2) / (fSampleDepth) + fNearX2;
+			float fEndY = (fFarY2 - fNearY2) / (fSampleDepth) + fNearY2;
 
 			for (int x = 0; x < ScreenWidth(); x++)
 			{
