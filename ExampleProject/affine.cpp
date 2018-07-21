@@ -15,6 +15,16 @@ private:
 	olcSprite *sprGround;
 	int nMapSize = 1024;
 
+	// Positon of player.
+	float fWorldX = 0.0f;
+	float fWorldY = 0.0f;
+	float fWorldA = 0.0f;
+
+	// 
+	float fNear = 0.01f;
+	float fFar = 0.1f;
+	float fFoVHalf = 3.14159 / 4.0f;
+
 protected:
 	virtual bool OnUserCreate()
 	{
