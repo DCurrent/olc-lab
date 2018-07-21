@@ -22,7 +22,7 @@ public:
 
 		for (int c = 0; c < 16; c++)
 		{
-			Fill(0, c * 6, 5, c * 6 + 5, PIXEL_QUARTER, c);
+			Fill(0, c * 6, 5, c * 6 + 5, PIXEL_SOLID, c);
 		}
 
 		return true;
