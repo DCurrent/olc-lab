@@ -94,6 +94,9 @@ protected:
 				float fSampleX = (fEndX - fStartX) * fSampleWidth + fStartX;
 				float fSampleY = (fEndY - fStartY) * fSampleWidth + fStartY;
 
+				fSampleX = fmod(fSampleX, 1.0f);
+				fSampleY = fmod(fSampleY, 1.0f);
+
 				wchar_t sym = sprGround->SampleGlyph(fSampleX, fSampleY);
 				short col = sprGround->SampleColour(fSampleX, fSampleY);
 
