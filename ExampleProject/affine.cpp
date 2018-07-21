@@ -11,6 +11,10 @@ public:
 		m_sAppName = L"Affine 3D";
 	}
 
+private:
+	olcSprite *sprGround;
+
+protected:
 	virtual bool OnUserCreate()
 	{
 		return true;
