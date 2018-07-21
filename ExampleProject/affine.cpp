@@ -56,6 +56,18 @@ protected:
 
 	virtual bool OnUserUpdate(float fElapsedTime)
 	{
+		float fFarX1 = fWorldX + cosf(fWorldA - fFoVHalf) * fFar;
+		float fFarY1 = fWorldY + sinf(fWorldA - fFoVHalf) * fFar;
+
+		float fFarX2 = fWorldX + cosf(fWorldA + fFoVHalf) * fFar;
+		float fFarY2 = fWorldY + sinf(fWorldA + fFoVHalf) * fFar;
+
+		float fNearX1 = fWorldX + cosf(fWorldA - fFoVHalf) * fNear;
+		float fNearY1 = fWorldY + sinf(fWorldA - fFoVHalf) * fNear;
+
+		float fNearX2 = fWorldX + cosf(fWorldA + fFoVHalf) * fNear;
+		float fNearY2 = fWorldY + sinf(fWorldA + fFoVHalf) * fNear;
+
 		return true;
 	}
 };
