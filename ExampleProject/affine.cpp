@@ -90,6 +90,29 @@ protected:
 			}
 		}
 
+		//  Get key events.
+		if (GetKey(VK_LEFT).bHeld)
+		{
+			fWorldA -= 1.0f * fElapsedTime;
+		}
+
+		if (GetKey(VK_RIGHT).bHeld)
+		{
+			fWorldA += 1.0f * fElapsedTime;
+		}
+
+		if (GetKey(VK_UP).bHeld)
+		{
+			fWorldX += cosf(fWorldA) * 0.2 * fElapsedTime;
+			fWorldY += sinf(fWorldA) * 0.2 * fElapsedTime;
+		}
+
+		if (GetKey(VK_DOWN).bHeld)
+		{
+			fWorldX -= cosf(fWorldA) * 0.2 * fElapsedTime;
+			fWorldY -= sinf(fWorldA) * 0.2 * fElapsedTime;
+		}
+
 		return true;
 	}
 };
