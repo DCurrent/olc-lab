@@ -41,11 +41,11 @@ protected:
 				sprGround->SetColour(x - 1, y, FG_MAGENTA);
 				sprGround->SetGlyph(x - 1, y, PIXEL_SOLID);
 
-				sprGround->SetColour(y, x, FG_MAGENTA);
+				sprGround->SetColour(y, x, FG_BLUE);
 				sprGround->SetGlyph(y, x, PIXEL_SOLID);
-				sprGround->SetColour(y, x + 1, FG_MAGENTA);
+				sprGround->SetColour(y, x + 1, FG_BLUE);
 				sprGround->SetGlyph(y, x + 1, PIXEL_SOLID);
-				sprGround->SetColour(y, x - 1, FG_MAGENTA);
+				sprGround->SetColour(y, x - 1, FG_BLUE);
 				sprGround->SetGlyph(y, x - 1, PIXEL_SOLID);
 
 			}
@@ -67,6 +67,28 @@ protected:
 
 		float fNearX2 = fWorldX + cosf(fWorldA + fFoVHalf) * fNear;
 		float fNearY2 = fWorldY + sinf(fWorldA + fFoVHalf) * fNear;
+
+		for(int y = 0; y < ScreenHeight() / 2; y++)
+		{
+			float fSampleDepth = (float)y / ((float)ScreenHeight() / 2.0f);
+
+			float fStartX = (fFarX1 - fNearX1) * (fSampleDepth) + fNearX1;
+			float fStartY = (fFarY1 - fNearY1) * (fSampleDepth) + fNearY1;
+			float fEndX = (fFarX2 - fNearX2) * (fSampleDepth) + fNearX2;
+			float fEndY = (fFarY2 - fNearY2) * (fSampleDepth) + fNearY2;
+
+			for (int x = 0; x < ScreenWidth(); x++)
+			{
+				float fSampleWidth = (float)x / (float)ScreenWidth();
+				float fSampleX = (fEndX - fStartX) * fSampleWidth + fStartX;
+				float fSampleY = (fEndY - fStartY) * fSampleWidth + fStartY;
+
+				wchar_t sym = sprGround->SampleGlyph(fSampleX, fSampleY);
+				short col = sprGround->SampleColour(fSampleX, fSampleY);
+
+				Draw(x, y + (ScreenHeight() / 2), sym, col);
+			}
+		}
 
 		return true;
 	}
