@@ -34,11 +34,11 @@ protected:
 		{
 			for (int y = 0; y < nMapSize; y++)
 			{
-				sprGround->SetColour(x, y, FG_MAGENTA);
+				sprGround->SetColour(x, y, FG_GREEN);
 				sprGround->SetGlyph(x, y, PIXEL_SOLID);
-				sprGround->SetColour(x + 1, y, FG_MAGENTA);
+				sprGround->SetColour(x + 1, y, FG_GREEN);
 				sprGround->SetGlyph(x + 1, y, PIXEL_SOLID);
-				sprGround->SetColour(x - 1, y, FG_MAGENTA);
+				sprGround->SetColour(x - 1, y, FG_GREEN);
 				sprGround->SetGlyph(x - 1, y, PIXEL_SOLID);
 
 				sprGround->SetColour(y, x, FG_BLUE);
@@ -56,8 +56,41 @@ protected:
 
 	virtual bool OnUserUpdate(float fElapsedTime)
 	{
-		int screen_height = ScreenHeight();
-		int screen_height_half = screen_height / 2;
+		int screen_height;
+		int screen_height_half;
+		int screen_width;
+
+		// Loop indexes
+		int x;
+		int y;
+
+		//
+		float fFarX1;
+		float fFarY1;
+		float fFarX2;
+		float fFarY2;
+		float fNearX1;
+		float fNearY1;
+		float fNearX2;
+		float fNearY2;
+
+		//
+		float fSampleDepth;
+
+		//
+		float fStartX;
+		float fStartY;
+		float fEndX;
+		float fEndY;
+
+		//
+		float fSampleWidth;
+		float fSampleX;
+		float fSampleY;
+
+		//
+		wchar_t sym;
+		short col;
 
 		//  Key detection.
 		if (GetKey(L'Q').bHeld) fNear += 0.1f * fElapsedTime;
@@ -69,39 +102,45 @@ protected:
 		if (GetKey(L'Z').bHeld) fFoVHalf += 0.1f * fElapsedTime;
 		if (GetKey(L'X').bHeld) fFoVHalf -= 0.1f * fElapsedTime;
 
+		// Get screen demensions
+		screen_height = ScreenHeight();
+		screen_height_half = screen_height / 2;
+		screen_width = ScreenWidth();
 
-		float fFarX1 = fWorldX + cosf(fWorldA - fFoVHalf) * fFar;
-		float fFarY1 = fWorldY + sinf(fWorldA - fFoVHalf) * fFar;
+		//
+		fFarX1 = fWorldX + cosf(fWorldA - fFoVHalf) * fFar;
+		fFarY1 = fWorldY + sinf(fWorldA - fFoVHalf) * fFar;
 
-		float fFarX2 = fWorldX + cosf(fWorldA + fFoVHalf) * fFar;
-		float fFarY2 = fWorldY + sinf(fWorldA + fFoVHalf) * fFar;
+		fFarX2 = fWorldX + cosf(fWorldA + fFoVHalf) * fFar;
+		fFarY2 = fWorldY + sinf(fWorldA + fFoVHalf) * fFar;
 
-		float fNearX1 = fWorldX + cosf(fWorldA - fFoVHalf) * fNear;
-		float fNearY1 = fWorldY + sinf(fWorldA - fFoVHalf) * fNear;
+		fNearX1 = fWorldX + cosf(fWorldA - fFoVHalf) * fNear;
+		fNearY1 = fWorldY + sinf(fWorldA - fFoVHalf) * fNear;
 
-		float fNearX2 = fWorldX + cosf(fWorldA + fFoVHalf) * fNear;
-		float fNearY2 = fWorldY + sinf(fWorldA + fFoVHalf) * fNear;
+		fNearX2 = fWorldX + cosf(fWorldA + fFoVHalf) * fNear;
+		fNearY2 = fWorldY + sinf(fWorldA + fFoVHalf) * fNear;
 
-		for(int y = 0; y < screen_height_half; y++)
+
+		for(y = 0; y < screen_height_half; y++)
 		{
-			float fSampleDepth = (float)y / (float)screen_height_half;
+			fSampleDepth = (float)y / (float)screen_height_half;
 
-			float fStartX = (fFarX1 - fNearX1) / (fSampleDepth) + fNearX1;
-			float fStartY = (fFarY1 - fNearY1) / (fSampleDepth) + fNearY1;
-			float fEndX = (fFarX2 - fNearX2) / (fSampleDepth) + fNearX2;
-			float fEndY = (fFarY2 - fNearY2) / (fSampleDepth) + fNearY2;
+			fStartX = (fFarX1 - fNearX1) / (fSampleDepth) + fNearX1;
+			fStartY = (fFarY1 - fNearY1) / (fSampleDepth) + fNearY1;
+			fEndX = (fFarX2 - fNearX2) / (fSampleDepth) + fNearX2;
+			fEndY = (fFarY2 - fNearY2) / (fSampleDepth) + fNearY2;
 
-			for (int x = 0; x < ScreenWidth(); x++)
+			for (x = 0; x < screen_width; x++)
 			{
-				float fSampleWidth = (float)x / (float)ScreenWidth();
-				float fSampleX = (fEndX - fStartX) * fSampleWidth + fStartX;
-				float fSampleY = (fEndY - fStartY) * fSampleWidth + fStartY;
+				fSampleWidth = (float)x / (float)screen_width;
+				fSampleX = (fEndX - fStartX) * fSampleWidth + fStartX;
+				fSampleY = (fEndY - fStartY) * fSampleWidth + fStartY;
 
 				fSampleX = fmod(fSampleX, 1.0f);
 				fSampleY = fmod(fSampleY, 1.0f);
 
-				wchar_t sym = sprGround->SampleGlyph(fSampleX, fSampleY);
-				short col = sprGround->SampleColour(fSampleX, fSampleY);
+				sym = sprGround->SampleGlyph(fSampleX, fSampleY);
+				col = sprGround->SampleColour(fSampleX, fSampleY);
 
 				Draw(x, y + screen_height_half, sym, col);
 			}
