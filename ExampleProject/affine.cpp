@@ -71,7 +71,7 @@ protected:
 		int x;
 		int y;
 
-		//
+		// Frustum corner points
 		float fFarX1;
 		float fFarY1;
 		float fFarX2;
@@ -114,7 +114,7 @@ protected:
 		screen_height_half = screen_height / 2;
 		screen_width = ScreenWidth();
 
-		//
+		// Populate frustum corner points.
 		fFarX1 = fWorldX + cosf(fWorldA - fFoVHalf) * fFar;
 		fFarY1 = fWorldY + sinf(fWorldA - fFoVHalf) * fFar;
 
@@ -127,9 +127,10 @@ protected:
 		fNearX2 = fWorldX + cosf(fWorldA + fFoVHalf) * fNear;
 		fNearY2 = fWorldY + sinf(fWorldA + fFoVHalf) * fNear;
 
-
+		// Starting with furthest away line and work towards the camera point
 		for(y = 0; y < screen_height_half; y++)
 		{
+			// Take a sample point for depth linearly related to rows down screen
 			fSampleDepth = (float)y / (float)screen_height_half;
 
 			fStartX = (fFarX1 - fNearX1) / (fSampleDepth) + fNearX1;
@@ -137,15 +138,19 @@ protected:
 			fEndX = (fFarX2 - fNearX2) / (fSampleDepth) + fNearX2;
 			fEndY = (fFarY2 - fNearY2) / (fSampleDepth) + fNearY2;
 
+			// Linearly interpolate lines across the screen
 			for (x = 0; x < screen_width; x++)
 			{
 				fSampleWidth = (float)x / (float)screen_width;
 				fSampleX = (fEndX - fStartX) * fSampleWidth + fStartX;
 				fSampleY = (fEndY - fStartY) * fSampleWidth + fStartY;
 
+				// Wrap sample coordinates to give "infinite" periodicity on maps
 				fSampleX = fmod(fSampleX, 1.0f);
 				fSampleY = fmod(fSampleY, 1.0f);
 
+				// Sample symbol and colour from map sprite, and draw the
+				// pixel to the screen
 				sym = sprGround->SampleGlyph(fSampleX, fSampleY);
 				col = sprGround->SampleColour(fSampleX, fSampleY);
 				Draw(x, y + screen_height_half, sym, col);
