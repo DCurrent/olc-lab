@@ -84,7 +84,7 @@ protected:
 
 		for(int y = 0; y < screen_height_half; y++)
 		{
-			float fSampleDepth = (float)y / ((float)screen_height / 2.0f);
+			float fSampleDepth = (float)y / (float)screen_height_half;
 
 			float fStartX = (fFarX1 - fNearX1) / (fSampleDepth) + fNearX1;
 			float fStartY = (fFarY1 - fNearY1) / (fSampleDepth) + fNearY1;
