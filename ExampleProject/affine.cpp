@@ -56,6 +56,9 @@ protected:
 
 	virtual bool OnUserUpdate(float fElapsedTime)
 	{
+		int screen_height = ScreenHeight();
+		int screen_height_half = screen_height / 2;
+
 		//  Key detection.
 		if (GetKey(L'Q').bHeld) fNear += 0.1f * fElapsedTime;
 		if (GetKey(L'A').bHeld) fNear -= 0.1f * fElapsedTime;
@@ -79,9 +82,9 @@ protected:
 		float fNearX2 = fWorldX + cosf(fWorldA + fFoVHalf) * fNear;
 		float fNearY2 = fWorldY + sinf(fWorldA + fFoVHalf) * fNear;
 
-		for(int y = 0; y < ScreenHeight() / 2; y++)
+		for(int y = 0; y < screen_height_half; y++)
 		{
-			float fSampleDepth = (float)y / ((float)ScreenHeight() / 2.0f);
+			float fSampleDepth = (float)y / ((float)screen_height / 2.0f);
 
 			float fStartX = (fFarX1 - fNearX1) / (fSampleDepth) + fNearX1;
 			float fStartY = (fFarY1 - fNearY1) / (fSampleDepth) + fNearY1;
@@ -100,7 +103,7 @@ protected:
 				wchar_t sym = sprGround->SampleGlyph(fSampleX, fSampleY);
 				short col = sprGround->SampleColour(fSampleX, fSampleY);
 
-				Draw(x, y + (ScreenHeight() / 2), sym, col);
+				Draw(x, y + screen_height_half, sym, col);
 			}
 		}
 
