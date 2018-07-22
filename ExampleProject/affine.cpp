@@ -13,6 +13,8 @@ public:
 
 private:
 	olcSprite *sprGround;
+	olcSprite *sprSky;
+
 	int nMapSize = 1024;
 
 	// Positon of player.
@@ -28,8 +30,10 @@ private:
 protected:
 	virtual bool OnUserCreate()
 	{
+		/*
 		sprGround = new olcSprite(nMapSize, nMapSize);
 
+		
 		for (int x = 0; x < nMapSize; x += 32)
 		{
 			for (int y = 0; y < nMapSize; y++)
@@ -47,9 +51,12 @@ protected:
 				sprGround->SetGlyph(y, x + 1, PIXEL_SOLID);
 				sprGround->SetColour(y, x - 1, FG_BLUE);
 				sprGround->SetGlyph(y, x - 1, PIXEL_SOLID);
-
 			}
 		}
+		*/
+
+		sprGround = new olcSprite(L"mariokart.spr");
+		sprSky = new olcSprite(L"sky1.spr");
 
 		return true;
 	}
@@ -141,8 +148,13 @@ protected:
 
 				sym = sprGround->SampleGlyph(fSampleX, fSampleY);
 				col = sprGround->SampleColour(fSampleX, fSampleY);
-
 				Draw(x, y + screen_height_half, sym, col);
+
+				// Sample symbol and colour from sky sprite, we can use same
+				// coordinates, but we need to draw the "inverted" y-location
+				sym = sprSky->SampleGlyph(fSampleX, fSampleY);
+				col = sprSky->SampleColour(fSampleX, fSampleY);
+				Draw(x, screen_height_half - y, sym, col);
 			}
 		}
 
